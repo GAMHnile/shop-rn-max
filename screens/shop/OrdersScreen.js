@@ -2,6 +2,7 @@ import React from 'react';
 import { FlatList, Platform, Text } from 'react-native';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import CustomHeaderButton from '../../components/ui/HeaderButton';
+import OrderItem from '../../components/shop/OrderItem';
 //redux imports
 import { useSelector } from 'react-redux';
 
@@ -10,21 +11,28 @@ const OrdersScreen = props => {
     return (
         <FlatList
             data={orders}
-            renderItem={(itemData) => <Text>{itemData.item.totalAmmount}</Text>}
+            renderItem={(itemData) => {
+                return (
+                    <OrderItem 
+                        date={itemData.item.readableDate}
+                        amount={itemData.item.totalAmmount}
+                    />
+                )
+            }}
             keyExtractor={(item) => item.id}
         />
     )
 }
 
-OrdersScreen.navigationOptions = (navData)=>{
+OrdersScreen.navigationOptions = (navData) => {
 
     return {
         headerTitle: "Your Orders",
-        headerLeft: ()=>(
+        headerLeft: () => (
             <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
-                <Item 
-                iconName={Platform.OS==="android"? "md-menu": "ios-menu"} 
-                    onPress={()=>{
+                <Item
+                    iconName={Platform.OS === "android" ? "md-menu" : "ios-menu"}
+                    onPress={() => {
                         navData.navigation.toggleDrawer();
                     }}
                 />
