@@ -1,17 +1,38 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, StyleSheet, Text, Button } from 'react-native';
 import CartItem from './CartItem';
 
 import COLORS from '../../constants/colors';
 
 const OrderItem = props => {
+    const [showDetails, setShowDetails] = useState(false);
     return (
         <View style={styles.orderItem}>
             <View style={styles.summary}>
-                <Text style={styles.price}>${props.amount}</Text>
+                <Text style={styles.price}>${props.amount.toFixed(2)}</Text>
                 <Text style={styles.date}>{props.date}</Text>
             </View>
-            <Button title="view details" color={COLORS.primary} />
+            <Button
+                title={showDetails? "Hide details": "View details"}
+                color={COLORS.primary}
+                onPress={() =>setShowDetails(prevShow => !prevShow)}
+            />
+            {
+                showDetails && (
+                    <View style={styles.detailItems}>
+                        {
+                            props.items.map(item => (
+                                <CartItem
+                                    key={item.productId}
+                                    sum={item.sum}
+                                    quantity={item.quantity}
+                                    title={item.productTitle}
+                                />
+                            ))
+                        }
+                    </View>
+                )
+            }
         </View>
     )
 }
@@ -22,7 +43,7 @@ const styles = StyleSheet.create({
         elevation: 5,
         shadowColor: "black",
         shadowOpacity: 0.26,
-        shadowOffset: {width: 0, height: 2},
+        shadowOffset: { width: 0, height: 2 },
         shadowRadius: 8,
         margin: 20,
         padding: 10,
@@ -44,6 +65,9 @@ const styles = StyleSheet.create({
     price: {
         fontFamily: "open-sans-bold",
         fontSize: 16
+    },
+    detailItems: {
+        width: "100%"
     }
 });
 
