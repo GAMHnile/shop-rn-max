@@ -9,9 +9,15 @@ const initialState = {
 
 const productsReducer = (state = initialState, action) => {
   switch (action.type) {
+    case productTypes.SET_PRODUCTS:
+      return {
+        ...state,
+        availableProducts: action.products,
+        userProducts: action.products.filter((prod) => prod.ownerId === "u1")
+      }
     case productTypes.CREATE_PRODUCT:
       const newProduct = new Product(
-        new Date().toString(),
+        action.productData.id,
         "u1",
         action.productData.title,
         action.productData.imageUrl,
