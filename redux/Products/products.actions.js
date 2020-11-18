@@ -12,6 +12,9 @@ export const fetchProducts = () => {
       const response = await fetch(
         "https://rn-complete-guide-a9a99.firebaseio.com/products.json"
       );
+      if(!response.ok){
+        throw new Error("Something went wrong");
+      }
       const resData = await response.json();
       const loadedProducts = [];
 
@@ -32,7 +35,9 @@ export const fetchProducts = () => {
         type: productTypes.SET_PRODUCTS,
         products: loadedProducts,
       });
-    } catch (err) {}
+    } catch (err) {
+      throw err;
+    }
   };
 };
 
