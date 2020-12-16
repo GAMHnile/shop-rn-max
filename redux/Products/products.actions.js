@@ -1,10 +1,24 @@
 import productTypes from "./product.types";
 import Product from "../../models/products.models";
 
-export const deleteProduct = (productId) => ({
-  type: productTypes.DELETE_PRODUCT,
-  pid: productId,
-});
+export const deleteProduct = (productId) => {
+  return async (dispatch) => {
+    try {
+      await fetch(
+        `https://rn-complete-guide-a9a99.firebaseio.com/products/${productId}.json`,
+        {
+          method: "DELETE",
+        }
+      );
+      dispatch({
+        type: productTypes.DELETE_PRODUCT,
+        pid: productId,
+      });
+    } catch (err) {
+      //handle error
+    }
+  };
+};
 
 export const fetchProducts = () => {
   return async (dispatch) => {
@@ -12,7 +26,7 @@ export const fetchProducts = () => {
       const response = await fetch(
         "https://rn-complete-guide-a9a99.firebaseio.com/products.json"
       );
-      if(!response.ok){
+      if (!response.ok) {
         throw new Error("Something went wrong");
       }
       const resData = await response.json();
@@ -65,8 +79,27 @@ export const createProduct = (title, imageUrl, price, description) => {
   };
 };
 
-export const updateProduct = (id, title, imageUrl, description) => ({
-  type: productTypes.UPDATE_PRODUCT,
-  pid: id,
-  productData: { title, imageUrl, description },
-});
+export const updateProduct = (id, title, imageUrl, description) => {
+  return async (dispatch) => {
+    try {
+      await fetch(
+        `https://rn-complete-guide-a9a99.firebaseio.com/products/${id}.json`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ title, imageUrl, description }),
+        }
+      );
+
+      dispatch({
+        type: productTypes.UPDATE_PRODUCT,
+        pid: id,
+        productData: { title, imageUrl, description },
+      });
+    } catch (err) {
+      //handle error
+    }
+  };
+};
