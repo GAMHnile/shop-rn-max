@@ -21,6 +21,7 @@ import COLORS from "../../constants/colors";
 
 const ProductsOverviewScreen = (props) => {
   const [loading, setLoading] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
   const [error, setError] = useState();
   const products = useSelector((state) => state.products.availableProducts);
   const dispatch = useDispatch();
@@ -28,24 +29,30 @@ const ProductsOverviewScreen = (props) => {
   const loadProducts = useCallback(async () => {
     try {
       setError(false);
-      setLoading(true);
+      setRefreshing(true);
       await dispatch(fetchProducts());
     } catch (err) {
       setError(err.message);
     }
-    setLoading(false);
+    setRefreshing(false);
   }, [setError, setLoading, dispatch]);
 
   useEffect(() => {
-    loadProducts();
+    setLoading(true);
+    loadProducts().then(() => {
+      setLoading(false);
+    });
   }, [loadProducts]);
 
-  useEffect(()=>{
-    const willFocusSub = props.navigation.addListener("willFocus", loadProducts);
-    return ()=>{
-      willFocusSub.remove()
-    }
-  }, [loadProducts])
+  useEffect(() => {
+    const willFocusSub = props.navigation.addListener(
+      "willFocus",
+      loadProducts
+    );
+    return () => {
+      willFocusSub.remove();
+    };
+  }, [loadProducts]);
   const selectItemHandler = (id, title) => {
     props.navigation.navigate("productDetail", {
       productId: id,
@@ -60,12 +67,12 @@ const ProductsOverviewScreen = (props) => {
       </View>
     );
   }
-  if (!loading && products.length === 0){
+  if (!loading && products.length === 0) {
     return (
-        <View style={styles.centered}>
-          <Text>No products found please add some</Text>
-        </View>
-      );
+      <View style={styles.centered}>
+        <Text>No products found please add some</Text>
+      </View>
+    );
   }
 
   if (error) {
@@ -83,6 +90,8 @@ const ProductsOverviewScreen = (props) => {
 
   return (
     <FlatList
+      onRefresh={loadProducts}
+      refreshing={refreshing}
       data={products}
       keyExtractor={(item) => item.id}
       renderItem={(itemData) => {

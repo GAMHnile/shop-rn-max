@@ -1,5 +1,5 @@
 import React from "react";
-import { FlatList, Platform, Button, Alert } from "react-native";
+import { FlatList, Platform, Button, Alert, View, Text } from "react-native";
 import ProductItem from "../../components/shop/ProductItem";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import CustomHeaderButton from "../../components/ui/HeaderButton";
@@ -31,6 +31,14 @@ const UserProductScreen = (props) => {
       },
     ]);
   };
+
+  if (userProducts.length === 0) {
+    return (
+      <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+        <Text>You have no products. </Text>
+      </View>
+    );
+  }
 
   return (
     <FlatList

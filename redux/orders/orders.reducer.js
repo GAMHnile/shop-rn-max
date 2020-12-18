@@ -8,12 +8,14 @@ const initialState = {
 
 const ordersReducer = (state=initialState, action) =>{
     switch(action.type){
+        case orderTypes.SET_ORDERS:
+            return {orders: action.payload}
         case orderTypes.ADD_ORDER:
             const newOrder = new Order(
-                new Date().toString(),
+                action.payload.id,
                 action.payload.items,
                 action.payload.total,
-                new Date()
+                action.payload.date
                 );
             return {...state, orders: state.orders.concat(newOrder)}
 
