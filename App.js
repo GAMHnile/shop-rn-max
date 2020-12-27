@@ -7,7 +7,7 @@ import { AppLoading } from 'expo';
 import { Provider } from 'react-redux';
 import store from './redux/store';
 
-import NavigationContainer from './navigation/NavigationContainer';
+import AppContainer from './navigation/AppContainer';
 
 enableScreens();
 
@@ -34,7 +34,7 @@ export default function App() {
 
   return (
     <Provider store={store} >
-      <NavigationContainer />
+      <AppContainer />
     </Provider>
   );
 }

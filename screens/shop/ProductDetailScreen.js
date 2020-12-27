@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
     }
 });
 
-ProductDetailScreen.navigationOptions = (navData) => {
+export const productDetailScreenOptions = (navData) => {
 
     return {
         headerTitle: navData.navigation.getParam("productTitle")

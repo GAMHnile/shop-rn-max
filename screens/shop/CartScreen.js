@@ -117,4 +117,8 @@ const styles = StyleSheet.create({
   },
 });
 
+export const cartScreenOptions = navData =>({
+  headerTitle: "Your Cart"
+})
+
 export default CartScreen;
