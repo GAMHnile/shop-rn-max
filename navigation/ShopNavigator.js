@@ -23,11 +23,11 @@ import OrdersScreen, {
 import UserProductScreen, {
   userProductScreenOptions,
 } from "../screens/user/UserProductsScreen";
-import EditProductsScreen from "../screens/user/EditProductsScreen";
+import EditProductsScreen, {editProductsScreenOptions} from "../screens/user/EditProductsScreen";
 
 import COLORS from "../constants/colors";
-import AuthScreen from "../screens/user/AuthScreen";
-import StartupScreen from "../screens/StartupScreen";
+import AuthScreen, { authScreenOptions } from "../screens/user/AuthScreen";
+//import StartupScreen from "../screens/StartupScreen";
 
 //redux imports
 import { useDispatch } from "react-redux";
@@ -179,7 +179,7 @@ export const ProdOrdersNavigator = () => {
               color={COLORS.primary}
               onPress={() => {
                 dispatch(logout());
-                props.navigation.navigate("Auth");
+                //props.navigation.navigate("Auth");
               }}
             />
           </View>
@@ -268,6 +268,20 @@ export const ProdOrdersNavigator = () => {
 //     },
 //   }
 // );
+
+const AuthStackNavigator = createStackNavigator();
+
+export const AuthNavigator = () => {
+  return (
+    <AuthStackNavigator.Navigator screenOptions={defNavOptions}>
+      <AuthStackNavigator.Screen
+        name="Auth"
+        component={AuthScreen}
+        options={authScreenOptions}
+      />
+    </AuthStackNavigator.Navigator>
+  );
+};
 
 // const AuthNavigator = createStackNavigator(
 //   {

@@ -1,7 +1,11 @@
-import { AsyncStorage } from "react-native";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import authTypes from "./auth.types";
 
 let timer;
+
+export const setDidTryAl = () => {
+  return { type: authTypes.SET_DID_TRY_AL };
+};
 
 export const authenticate = (token, userId, expiryTime) => (dispatch) => {
   dispatch(setLogoutTimer(expiryTime));

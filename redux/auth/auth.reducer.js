@@ -2,6 +2,7 @@ import authTypes from "./auth.types";
 const INITIAL_STATE = {
   token: null,
   userId: null,
+  didTryAl: false,
 };
 
 const authReducer = (state = INITIAL_STATE, action) => {
@@ -12,9 +13,12 @@ const authReducer = (state = INITIAL_STATE, action) => {
       return {
         token: action.payload.token,
         userId: action.payload.userId,
+        didTryAl: true,
       };
+    case authTypes.SET_DID_TRY_AL:
+      return { ...state, didTryAl: true };
     case authTypes.LOGOUT:
-        return INITIAL_STATE;
+      return INITIAL_STATE;
     default:
       return state;
   }

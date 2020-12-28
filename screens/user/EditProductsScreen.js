@@ -51,7 +51,7 @@ const formReducer = (state, action) => {
 const EditProductsScreen = (props) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState();
-  const prodId = props.navigation.getParam("productId");
+  const prodId = props.route.params ? props.route.params.productId : null;
   const selectedProduct = useSelector((state) =>
     state.products.userProducts.find((prod) => prod.id === prodId)
   );
@@ -124,14 +124,23 @@ const EditProductsScreen = (props) => {
     }
   }, [prodId, formState]);
   useEffect(() => {
-    if(error){
+    if (error) {
       Alert.alert("An error occured", error, [{ text: "Okay" }]);
     }
   }, [error]);
 
   useEffect(() => {
-    props.navigation.setParams({
-      submit: submitHandler,
+    props.navigation.setOptions({
+      headerRight: () => (
+        <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
+          <Item
+            iconName={
+              Platform.OS === "android" ? "md-checkmark" : "ios-checkmark"
+            }
+            onPress={submitHandler}
+          />
+        </HeaderButtons>
+      ),
     });
   }, [submitHandler]);
   if (loading) {
@@ -200,21 +209,9 @@ const EditProductsScreen = (props) => {
 };
 
 export const editProductsScreenOptions = (navData) => {
-  const submitFn = navData.navigation.getParam("submit");
+  const routeParams = navData.route.params ? navData.route.params : {};
   return {
-    headerTitle: navData.navigation.getParam("productId")
-      ? "Edit product"
-      : "Add product",
-    headerRight: () => (
-      <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
-        <Item
-          iconName={
-            Platform.OS === "android" ? "md-checkmark" : "ios-checkmark"
-          }
-          onPress={submitFn}
-        />
-      </HeaderButtons>
-    ),
+    headerTitle: routeParams.productId ? "Edit product" : "Add product",
   };
 };
 
@@ -224,7 +221,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-  }
+  },
 });
 
 export default EditProductsScreen;

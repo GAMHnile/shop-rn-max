@@ -2,12 +2,15 @@ import React from "react";
 //import ShopNavigator from "./ShopNavigator";
 //import { NavigationActions } from "react-navigation";
 //redux imports
-//import { useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { NavigationContainer } from "@react-navigation/native";
-import {ProductsNavigator} from './ShopNavigator';
+import {AuthNavigator, ProdOrdersNavigator} from './ShopNavigator';
+import StartupScreen from "../screens/StartupScreen";
+
 
 const AppContainer = (props) => {
-  //   const isAuth = useSelector((state) => !!state.auth.token);
+    const isAuth = useSelector((state) => !!state.auth.token);
+    const didTryAl = useSelector((state) => state.auth.didTryAl);
   //const navRef = useRef();
   //   useEffect(() => {
   //     if (!isAuth) {
@@ -19,7 +22,9 @@ const AppContainer = (props) => {
 
   return (
     <NavigationContainer>
-      <ProductsNavigator />
+      { isAuth && <ProdOrdersNavigator />}
+      {!isAuth && !didTryAl && <StartupScreen />}
+      {!isAuth && didTryAl && <AuthNavigator />}
     </NavigationContainer>
   );
 };

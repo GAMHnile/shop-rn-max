@@ -12,7 +12,8 @@ import { LinearGradient } from "expo-linear-gradient";
 import Input from "../../components/ui/Input";
 import Card from "../../components/ui/Card";
 import COLORS from "../../constants/colors";
-import { useHeaderHeight } from "react-navigation-stack";
+//import { useHeaderHeight } from "react-navigation-stack";
+import { useHeaderHeight } from '@react-navigation/stack';
 //redux imports
 import { useDispatch } from "react-redux";
 import { signUp, login } from "../../redux/auth/auth.actions";
@@ -100,7 +101,7 @@ const AuthScreen = (props) => {
     setLoading(true);
     try {
       await dispatch(action);
-      props.navigation.navigate('ProdOrders');
+      //props.navigation.navigate('ProdOrders');
     } catch (err) {
       setError(err.message);
       setLoading(false);
@@ -169,7 +170,7 @@ const AuthScreen = (props) => {
   );
 };
 
-AuthScreen.navigationOptions = {
+export const authScreenOptions = {
   headerTitle: "Authenticate",
 };
 
